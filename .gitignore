@@ -1,0 +1,8 @@
+# run directories of ans build / ans run (MAPDL scratch and result files, often several GB)
+.ans/
+# models exported by ans build: large, and made again from <job>.build.mac
+*.cdb
+# human review state and build records of this workspace
+.abq/review.json
+.abq/review/
+.abq/builds.json

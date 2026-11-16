@@ -1,0 +1,18 @@
+! 实体悬臂梁：1 m × 0.05 m × 0.05 m，钢，x = 0 端固定。单位 m、N、Pa、kg。
+! 照抄这个结构：/PREP7 → 单元类型 → 材料 → 几何 → 网格 → 组件 → 初始约束和载荷 → FINISH。不能有 SOLVE。
+/PREP7
+ET,1,SOLID185                 ! 8 节点六面体
+MP,EX,1,2.0E11                ! 弹性模量 Pa
+MP,PRXY,1,0.3                 ! 泊松比
+MP,DENS,1,7850                ! 密度 kg/m^3（模态、瞬态、重力都要）
+BLOCK,0,1,0,0.05,0,0.05       ! x1,x2, y1,y2, z1,z2
+ESIZE,0.0125                  ! 单元边长：截面 4 × 4、长度方向 80 个单元
+VMESH,ALL
+! 组件：要加约束、加载荷、取结果的地方都建成组件（求解段和 ans rst --comp 都只认组件名）
+NSEL,S,LOC,X,0
+CM,NFIX,NODE                  ! 固定端的节点
+NSEL,S,LOC,X,1
+CM,NTIP,NODE                  ! 自由端的节点（25 个）
+ALLSEL,ALL
+D,NFIX,ALL,0                  ! 初始约束也可以写在建模里，会进 CDB
+FINISH

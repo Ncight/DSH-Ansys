@@ -1,0 +1,7 @@
+! 静力，端部共 100 N 向下：F 按组件加时是「每个节点」的值，NTIP 有 25 个节点，所以写 -100/25 = -4
+/SOLU
+ANTYPE,STATIC
+OUTRES,ALL,ALL
+F,NTIP,FZ,-4
+SOLVE
+FINISH

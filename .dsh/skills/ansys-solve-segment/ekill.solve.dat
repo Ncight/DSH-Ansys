@@ -1,0 +1,12 @@
+! 线性静力里要杀死单元，NROPT,FULL 必须写在第一次 SOLVE 之前（写在后面 MAPDL 报错停算）
+/SOLU
+ANTYPE,STATIC
+NROPT,FULL
+OUTRES,ALL,ALL
+SF,NTOP,PRES,1000             ! 按节点组件加面压：作用在节点全属于 NTOP 的单元面上（顶面）
+SOLVE
+EKILL,ERIGHT                  ! 杀死右半边：它上面的面压也不再起作用
+SOLVE
+EALIVE,ERIGHT
+SOLVE
+FINISH

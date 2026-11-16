@@ -1,0 +1,11 @@
+! 谐响应（完全法）0～100 Hz，50 个频率点，2% 阻尼；端部每节点 -0.4 N 的简谐力
+/SOLU
+ANTYPE,HARMIC
+HROPT,FULL
+HARFRQ,0,100
+NSUBST,50
+KBC,1
+DMPSTR,0.04                   ! 结构阻尼系数（DMPRAT 在全谐响应里 MAPDL 2025 R1 提示以后不支持）
+F,NTIP,FZ,-0.4
+SOLVE
+FINISH

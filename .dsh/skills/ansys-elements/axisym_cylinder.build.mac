@@ -1,0 +1,16 @@
+! 轴对称厚壁圆筒：内半径 0.1 m、外半径 0.2 m，取一段高 0.05 m，PLANE182 轴对称（X = 半径，Y = 轴向）
+/PREP7
+ET,1,PLANE182
+KEYOPT,1,3,1                  ! KEYOPT(3)=1：轴对称。模型必须画在 X >= 0 一侧，Y 轴是对称轴
+MP,EX,1,2.0E11
+MP,PRXY,1,0.3
+RECTNG,0.1,0.2,0,0.05         ! 半径 0.1～0.2，高 0～0.05
+ESIZE,0.005
+AMESH,ALL
+NSEL,S,LOC,X,0.1
+CM,NINNER,NODE                ! 内表面
+NSEL,S,LOC,Y,0
+CM,NBOT,NODE
+ALLSEL,ALL
+D,NBOT,UY,0                   ! 只挡轴向刚体位移；两端轴向自由（轴向应力为 0）
+FINISH

@@ -1,0 +1,14 @@
+! 瞬态（完全法）：0～0.05 s 端部突加 100 N，0.05～0.1 s 卸掉后自由振动
+/SOLU
+ANTYPE,TRANS
+TRNOPT,FULL
+OUTRES,ALL,ALL
+DELTIM,0.001
+KBC,1                         ! 阶跃加载（0 为斜坡）
+TIME,0.05
+F,NTIP,FZ,-4
+SOLVE
+FDELE,NTIP,FZ                 ! 删掉载荷
+TIME,0.1
+SOLVE
+FINISH

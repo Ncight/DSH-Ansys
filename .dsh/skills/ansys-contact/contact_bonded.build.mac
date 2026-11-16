@@ -1,0 +1,44 @@
+! 两块叠放的块体用「绑定」接触连在一起（KEYOPT(12)=5，始终绑定），上块被往上拉也不会分开
+/PREP7
+ET,1,SOLID185
+ET,2,TARGE170
+ET,3,CONTA174
+KEYOPT,3,12,5                 ! 接触行为：5 = 始终绑定（0 = 标准，可分开可滑移）
+MP,EX,1,2.0E11
+MP,PRXY,1,0.3
+MP,DENS,1,7850
+MP,EX,2,2.0E11                ! 接触单元的材料号（摩擦系数 MU 放在这里；绑定时用不到）
+R,3                           ! 接触对靠同一个实常数号配对
+BLOCK,0,1,0,1,0,0.5
+BLOCK,0.2,0.8,0.2,0.8,0.5,1.0
+ESIZE,0.1
+TYPE,1
+MAT,1
+VMESH,ALL
+VSEL,S,VOLU,,1                ! 下块的上表面做目标面
+ASLV,S
+ASEL,R,LOC,Z,0.5
+NSLA,S,1
+TYPE,2
+MAT,2
+REAL,3
+ESURF
+ALLSEL,ALL
+VSEL,S,VOLU,,2                ! 上块的下表面做接触面
+ASLV,S
+ASEL,R,LOC,Z,0.5
+NSLA,S,1
+TYPE,3
+MAT,2
+REAL,3
+ESURF
+ALLSEL,ALL
+NSEL,S,LOC,Z,0
+CM,NBASE,NODE
+NSEL,S,LOC,Z,1.0
+CM,NTOP,NODE
+ALLSEL,ALL
+D,NBASE,ALL,0
+D,NTOP,UX,0
+D,NTOP,UY,0
+FINISH

@@ -1,0 +1,13 @@
+! 特征值屈曲：先静力（PSTRES,ON，加 1 N 压力），FINISH 后重新进 /SOLU 做屈曲；载荷因子 × 1 N 就是临界载荷
+/SOLU
+ANTYPE,STATIC
+PSTRES,ON
+F,NTIP,FX,-0.04               ! 25 个节点 × -0.04 N = -1 N
+SOLVE
+FINISH
+/SOLU
+ANTYPE,BUCKLE
+BUCOPT,LANB,3
+MXPAND,3
+SOLVE
+FINISH

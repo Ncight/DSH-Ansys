@@ -1,0 +1,33 @@
+! 应力线性化例子：闭口厚壁圆筒的四分之一段，内半径 0.1 m、外半径 0.12 m、长 0.1 m，SOLID186 映射网格（壁厚方向 8 层）
+! 单位 SI（m、N、Pa）。对称面 x = 0、y = 0、z = 0；z = 0.1 端面加闭口的轴向拉力（求解段里）
+/PREP7
+ET,1,SOLID186
+MP,EX,1,2.0E11
+MP,PRXY,1,0.3
+CYLIND,0.1,0.12,0,0.1,0,90      ! 半径 0.1～0.12，z 0～0.1，角度 0～90°
+CSYS,1                           ! 柱坐标里按位置选线：X = 半径、Y = 角度、Z = 轴向
+LSEL,S,LOC,X,0.1001,0.1199       ! 径向的线（壁厚方向）
+LESIZE,ALL,,,8
+LSEL,S,LOC,Z,0.0001,0.0999       ! 轴向的线
+LESIZE,ALL,,,10
+LSEL,S,LOC,Y,1,89                ! 圆弧
+LESIZE,ALL,,,24
+LSEL,ALL
+MSHKEY,1
+MSHAPE,0,3D
+VMESH,ALL
+NSEL,S,LOC,X,0.1
+CM,NINNER,NODE                   ! 内表面
+CSYS,0
+NSEL,S,LOC,Y,0
+CM,NSYMY,NODE
+NSEL,S,LOC,X,0
+CM,NSYMX,NODE
+NSEL,S,LOC,Z,0
+CM,NZ0,NODE
+NSEL,S,LOC,Z,0.1
+CM,NEND,NODE                     ! 端面：加闭口轴向力
+ALLSEL,ALL
+D,NSYMY,UY,0
+D,NSYMX,UX,0
+D,NZ0,UZ,0

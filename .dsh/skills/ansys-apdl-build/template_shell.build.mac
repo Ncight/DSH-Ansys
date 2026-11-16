@@ -1,0 +1,18 @@
+! 壳悬臂板：1 m × 0.2 m，厚 0.01 m，SHELL181，x = 0 边固定。单位 m、N、Pa、kg。
+/PREP7
+ET,1,SHELL181
+MP,EX,1,2.0E11
+MP,PRXY,1,0.3
+MP,DENS,1,7850
+SECTYPE,1,SHELL
+SECDATA,0.01,1                ! 厚度, 材料号
+RECTNG,0,1,0,0.2              ! XY 平面里的矩形面
+ESIZE,0.05
+AMESH,ALL
+NSEL,S,LOC,X,0
+CM,NFIX,NODE
+NSEL,S,LOC,X,1
+CM,NTIP,NODE                  ! 5 个节点
+ALLSEL,ALL
+D,NFIX,ALL,0                  ! 壳和梁的节点有转动自由度，ALL 连转动一起固定
+FINISH

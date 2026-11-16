@@ -1,0 +1,6 @@
+/SOLU
+ANTYPE,STATIC
+OUTRES,ALL,ALL
+F,NTIP,FZ,-100                ! 只有一个节点，每节点就是总力
+SOLVE
+FINISH

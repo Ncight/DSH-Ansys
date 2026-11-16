@@ -1,0 +1,14 @@
+! 静力，三个载荷步：端部 100 N、200 N，第三步不改载荷也不写 TIME（结束时间取上一步加 1）
+/SOLU
+ANTYPE,STATIC
+NLGEOM,OFF
+OUTRES,ALL,ALL
+TIME,1
+NSUBST,1
+F,NTIP,FZ,-4                  ! 25 个节点 × -4 N = -100 N
+SOLVE
+TIME,2
+F,NTIP,FZ,-8                  ! 同一组件再写 F，是改写，不是叠加
+SOLVE
+SOLVE
+FINISH
