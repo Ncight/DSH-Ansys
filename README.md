@@ -11,7 +11,7 @@
 | `AGENTS.md` | 每次会话都会读到的工作区说明：工具清单、流程、硬性规则 |
 | `.dsh/skills/` | 按需加载的五份知识：建模命令流（`ansys-apdl-build`）、求解段（`ansys-solve-segment`）、单元（`ansys-elements`）、接触（`ansys-contact`）、后处理和应力线性化（`ansys-postprocess`）。里面引用的每个例子都在本机实跑过、和手算对过 |
 | `ans.cmd` | 工具箱入口，调 DSH-Abaqus 里的 `tools\ans\ans.py` |
-| `.abq/config.json` | 人工闸门开关，默认开着（`{"gate": "human"}`） |
+| `.abq/config.json` | 人工闸门开关（默认开着）；`peer_workspaces` 写和本工作区共用一个排队的工作区（默认 `E:\DSH-Abaqus`）；`mapdl_max_cores` 是 MAPDL 最多用几个核，不写取 4，许可证允许更多（有 HPC）时调大 |
 | `cases/` | 已验证的算例清单（`cases/README.md`）；你的题目也放在这里，一题一个文件夹 |
 
 ## 一道题怎么走
@@ -19,7 +19,7 @@
 1. 模型读题、先估算，再写两个文件：`<job>.build.mac`（几何、网格、材料、组件、初始的约束和载荷，不能求解）和 `<job>.solve.dat`（分析类型、载荷步、对组件加载、`SOLVE`，只能用白名单里的命令）。
 2. `ans build <job>`：MAPDL 跑建模命令流，用 CDWRITE 导出 `<job>.cdb`，顺手体检。
 3. 停下等你审：在预览面板里看 CDB（几何、约束、载荷、材料、接触、每个载荷步），点「批准求解」或「退回修改」，可以对着具体参数写意见。批准针对这一份 CDB 和求解段的内容，哪一份改了都要重审。
-4. `ans run <job>`：核对批准记录，在干净目录里读入 CDB、执行求解段，给出结果摘要和核查结论。
+4. `ans run <job>`：核对批准记录 → 排队等资源 → 在干净目录里读入 CDB、执行求解段 → 结果摘要和核查结论。核数按本机此刻的空闲核、模型规模和 `mapdl_max_cores` 自动定；和 DSH-Abaqus 工作区的作业在同一个队里，按提交顺序启动；不设墙钟上限，看门狗盯 MAPDL 的 `<job>.mntr`，太久没有新子步就报警，连续两次停止作业。
 5. `ans rst <job>` 取结果（`--comp` 组件、`--step` 载荷步、`--lin` 沿评定线做应力线性化），`ans verify <job>` 收工前核查，和估算对比后汇报。
 
 ## 安装
@@ -50,7 +50,7 @@
 py E:\DSH-Abaqus\tools\ans\skill_checks\run_all.py
 ```
 
-把 skill 里引用的 14 个例子用 `ans build` + `ans run` 全部实跑一遍，和梁理论、Lamé、欧拉公式等手算结果比（清单见 `cases/README.md`）。改了 skill、改了工具或升级 ANSYS 之后重跑。一次只跑一个 MAPDL。
+把 skill 里引用的 14 个例子用 `ans build` + `ans run` 全部实跑一遍，和梁理论、Lamé、欧拉公式等手算结果比（清单见 `cases/README.md`）。改了 skill、改了工具或升级 ANSYS 之后重跑。机器上有别的求解占着内存时，先在同一个终端里设 `set ABQ_RESERVE_MEM_GB=2`，免得测试因为预留内存一直排队。
 
 ## 许可
 

@@ -1,3 +1,6 @@
 {
- "gate": "human"
+ "gate": "human",
+ "peer_workspaces": [
+  "E:\\DSH-Abaqus"
+ ]
 }
