@@ -38,7 +38,7 @@
 ## 按难度决定投入
 
 - **简单任务**（线性静力或模态、一个部件、需求明确）：照 `.dsh\skills\ansys-apdl-build\template_*.build.mac` 的结构直接写，走完上面 7 步即可。
-- **有难点的任务**：动手前加载**最相关的一两个** skill（不要全部加载）：多载荷步、模态、谐响应、瞬态、屈曲、杀死单元、螺栓预紧 → `ansys-solve-segment`；接触、绑定 → `ansys-contact`；选单元、截面、轴对称、网格 → `ansys-elements`；取结果、核对、应力线性化（压力容器按应力分类评定） → `ansys-postprocess`。
+- **有难点的任务**：动手前加载**最相关的一两个** skill（不要全部加载）：多载荷步、模态、谐响应、瞬态、屈曲、杀死单元、螺栓预紧 → `ansys-solve-segment`；接触、绑定 → `ansys-contact`；选单元、截面、轴对称、网格 → `ansys-elements`；取结果、核对、应力线性化（压力容器按应力分类评定） → `ansys-postprocess`；要把结果做成网页里能转的三维图（流线/切面/云图导 glTF，three.js 看图） → `cfd-web3d`。
 - **同一个错误连续三次没修好就换路**：停止微调，换一种做法（换单元、换建模方式、照 skill 里的例子重写）。
 
 ## 硬性规则

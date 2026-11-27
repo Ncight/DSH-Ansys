@@ -9,7 +9,7 @@
 | 路径 | 是什么 |
 |---|---|
 | `AGENTS.md` | 每次会话都会读到的工作区说明：工具清单、流程、硬性规则 |
-| `.dsh/skills/` | 按需加载的五份知识：建模命令流（`ansys-apdl-build`）、求解段（`ansys-solve-segment`）、单元（`ansys-elements`）、接触（`ansys-contact`）、后处理和应力线性化（`ansys-postprocess`）。里面引用的每个例子都在本机实跑过、和手算对过 |
+| `.dsh/skills/` | 按需加载的六份知识：建模命令流（`ansys-apdl-build`）、求解段（`ansys-solve-segment`）、单元（`ansys-elements`）、接触（`ansys-contact`）、后处理和应力线性化（`ansys-postprocess`）、把结果做成网页 3D（`cfd-web3d`）。里面引用的每个例子都在本机实跑过、和手算对过 |
 | `ans.cmd` | 工具箱入口，调 DSH-Abaqus 里的 `tools\ans\ans.py` |
 | `.abq/config.json` | 人工闸门开关（默认开着）；`peer_workspaces` 写和本工作区共用一个排队的工作区（默认 `E:\DSH-Abaqus`）；`mapdl_max_cores` 是 MAPDL 最多用几个核，不写取 4，许可证允许更多（有 HPC）时调大 |
 | `cases/` | 已验证的算例清单（`cases/README.md`）；你的题目也放在这里，一题一个文件夹 |
@@ -21,6 +21,21 @@
 3. 停下等你审：在预览面板里看 CDB（几何、约束、载荷、材料、接触、每个载荷步），点「批准求解」或「退回修改」，可以对着具体参数写意见。批准针对这一份 CDB 和求解段的内容，哪一份改了都要重审。
 4. `ans run <job>`：核对批准记录 → 排队等资源 → 在干净目录里读入 CDB、执行求解段 → 结果摘要和核查结论。核数按本机此刻的空闲核、模型规模和 `mapdl_max_cores` 自动定；和 DSH-Abaqus 工作区的作业在同一个队里，按提交顺序启动；不设墙钟上限，看门狗盯 MAPDL 的 `<job>.mntr`，太久没有新子步就报警，连续两次停止作业。
 5. `ans rst <job>` 取结果（`--comp` 组件、`--step` 载荷步、`--lin` 沿评定线做应力线性化），`ans verify <job>` 收工前核查，和估算对比后汇报。
+
+## 把结果做成网页里能转的 3D
+
+后处理出来的流线、切面、云图，除了出 PNG，还能做成浏览器里能转的三维图（glTF/GLB + three.js）。
+这条是可选的，按需加载 `.dsh/skills/cfd-web3d`：
+
+```powershell
+# 场数据 -> 管状流线 GLB + 图例信息
+& 'D:\program\py\python.exe' .dsh\skills\cfd-web3d\scripts\field_streamlines.py --npz mid.npz --out scene.glb
+# 起本地查看器
+node .dsh\skills\cfd-web3d\web\serve.mjs 8787
+```
+
+同一条链路也吃 COMSOL 的原生 glTF 导出（`Image` 导出节点）和 CFD-Post 的 `HARDCOPY ... glb2`。
+详见 SKILL.md 里的路线对比、八个坑和体积预算。
 
 ## 安装
 
